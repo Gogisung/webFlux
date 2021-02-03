@@ -1,0 +1,65 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: webflux
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/webflux
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-db
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format-sql: true
+  mvc:
+    view:
+      suffix: .html
+  data:
+    web:
+      pageable:
+        default-page-size: 5
+  servlet:
+    multipart:
+      location: src/main/resources/static
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
+celldok:
+  file:
+    pathPrefix: src/main/resources/static
+    pathLast: /img/
+
+#  webflux:
+#    static-path-pattern: "/resources/**"
+
+mybatis:
+  type-aliases-package: com.selldok.toy.mapper
+  mapper-locations: mybatis/mapper/**/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
+logging:
+  level:
+    jdbc.sqlonly: DEBUG
+    org.springframework.web: DEBUG
+    com.zaxxer.hikari.HikariDataSource: ERROR
+
+---
+
+spring:
+  profiles: dev_env_dskim
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost:9092/~/util/h2/db/wanted;INIT=CREATE SCHEMA IF NOT EXISTS wanted\;SET SCHEMA wanted
+    #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    #url: jdbc:log4jdbc:h2:mem:testdb
+  jpa:
+    hibernate:
+      ddl-auto: update
